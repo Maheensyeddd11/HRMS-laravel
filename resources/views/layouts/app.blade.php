@@ -1,18 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ sidebarOpen: false }" class="h-full">
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'HRMS System')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
-<body class="bg-gradient-to-br from-gray-100 to-blue-50 font-sans text-gray-800">
+<body class="bg-gradient-to-br from-gray-100 to-blue-50 font-sans text-gray-800 h-full">
 
     {{-- Top Navigation --}}
     <header class="bg-white shadow-md border-b px-6 py-4 flex justify-between items-center">
         <div class="text-2xl font-bold text-blue-700 tracking-wide">HRMS</div>
-        <div class="flex items-center gap-4">
+
+        {{-- Hamburger Button for Mobile --}}
+        <button @click="sidebarOpen = !sidebarOpen" class="md:hidden text-gray-600 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
+        {{-- Search & Welcome (Hidden on Mobile) --}}
+        <div class="hidden md:flex items-center gap-4">
             <button class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
                 Upload
             </button>
@@ -24,8 +36,7 @@
     <div class="flex min-h-screen">
 
         {{-- Sidebar --}}
-        <aside class="w-64 bg-white border-r px-6 py-6 shadow-sm">
-            <h2 class="text-sm font-bold text-gray-600 uppercase mb-4 tracking-widest">Main Navigation</h2>
+        <aside :class="sidebarOpen ? 'block' : 'hidden'" class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r px-6 py-6 shadow-md md:static md:block">
             <nav class="space-y-3">
                 @foreach([
                     'dashboard' => 'Dashboard',
@@ -54,14 +65,13 @@
         </aside>
 
         {{-- Main Content --}}
-        <main class="flex-1 px-8 py-8">
+        <main class="flex-1 px-4 sm:px-6 lg:px-8 py-6 mt-16 md:mt-0">
             @hasSection('header')
                 <div class="mb-6 pb-2 border-b">
                     <h2 class="text-2xl font-semibold text-gray-800">@yield('header')</h2>
                 </div>
             @endif
 
-           
             @yield('content')
         </main>
     </div>

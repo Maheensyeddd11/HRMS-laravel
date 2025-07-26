@@ -21,15 +21,16 @@ class AttendanceController extends Controller
         'date' => $date,
         ]);
     }
-    public function create()
-    {
-        $employees = Employee::all();
-        return view('attendance.create',   [
+  public function create(Request $request)
+{
+    $employees = Employee::all();
+    $date = $request->date ?? now()->format('Y-m-d');
+
+    return view('attendance.create', [
         'employees' => $employees,
         'date' => $date,
-        ]);
-
-    }
+    ]);
+}
 
     public function store(Request $request)
     {

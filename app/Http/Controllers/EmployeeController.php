@@ -9,23 +9,23 @@ use App\Models\Designation;
 
 class EmployeeController extends Controller
 {
-   public function index(Request $request)
-{
-    $query = Employee::with(['designation', 'department']);
+    public function index(Request $request)
+    {
+        $query = Employee::with(['designation', 'department']);
 
-    if ($search = $request->input('search')) {
-        $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%{$search}%")
-              ->orWhere('email', 'like', "%{$search}%")
-              ->orWhere('phone', 'like', "%{$search}%");
-        });
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        // ✅ Use pagination so `links()` works
+        $employees = $query->latest()->paginate(10);
+
+        return view('employees.index', compact('employees'));
     }
-
-    $employees = $query->latest()->get();
-
-    return view('employees.index', compact('employees'));
-}
-
 
     public function create()
     {

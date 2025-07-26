@@ -10,7 +10,7 @@
 <div class="py-10 bg-gray-100 min-h-screen">
     <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 
-        {{--  Request Leave Button --}}
+        {{-- Request Leave Button --}}
         <div class="mb-6 flex justify-between items-center">
             <a href="{{ route('leaves.create') }}"
                class="px-5 py-2.5 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition">
@@ -18,12 +18,14 @@
             </a>
         </div>
 
-        {{--  Leave Requests Table --}}
+        {{-- Leave Requests Table/Card Container --}}
         <div class="bg-white border border-slate-200 shadow-md rounded-xl p-6">
+
             @if($leaves->isEmpty())
                 <p class="text-gray-600 text-center py-8">No leave requests found.</p>
             @else
-                <div class="overflow-x-auto">
+                {{-- Table for md and above --}}
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full table-auto text-sm text-left text-gray-800 divide-y divide-gray-200">
                         <thead class="bg-gray-100 uppercase tracking-wider text-gray-700">
                             <tr>
@@ -58,6 +60,30 @@
                         </tbody>
                     </table>
                 </div>
+
+                {{-- Card list for small screens (mobile) --}}
+                <div class="md:hidden space-y-4">
+                    @foreach($leaves as $leave)
+                        <div class="p-4 border border-gray-200 rounded-lg shadow-sm bg-white">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-lg">{{ $leave->employee->name }}</span>
+                                <span class="inline-block px-3 py-1 rounded-full text-sm
+                                    {{ $leave->status == 'approved' ? 'bg-green-100 text-green-800' : 
+                                       ($leave->status == 'rejected' ? 'bg-red-100 text-red-800' : 
+                                       'bg-yellow-100 text-yellow-800') }}">
+                                    {{ ucfirst($leave->status) }}
+                                </span>
+                            </div>
+                            <div class="mb-1 text-gray-700"><strong>Leave Type:</strong> {{ $leave->leave_type }}</div>
+                            <div class="mb-1 text-gray-700"><strong>From:</strong> {{ $leave->from_date }}</div>
+                            <div class="mb-1 text-gray-700"><strong>To:</strong> {{ $leave->to_date }}</div>
+                            <div>
+                                <a href="{{ route('leaves.edit', $leave) }}" class="text-indigo-600 hover:underline text-sm">Edit</a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
             @endif
         </div>
     </div>

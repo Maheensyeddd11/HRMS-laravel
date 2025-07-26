@@ -7,8 +7,8 @@
 @endsection
 
 @section('content')
-    <div class="py-10 bg-gray-100 min-h-screen">
-        <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border border-slate-200">
+    <div class="py-10 bg-gray-100 min-h-screen px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-md border border-slate-200">
             <form action="{{ route('profile.update') }}" method="POST" class="space-y-6">
                 @csrf
                 @method('PUT')
@@ -34,7 +34,9 @@
 
                 {{-- New Password --}}
                 <div>
-                    <label class="block mb-1 font-medium text-gray-700">New Password <span class="text-sm text-gray-500">(optional)</span></label>
+                    <label class="block mb-1 font-medium text-gray-700">New Password 
+                        <span class="text-sm text-gray-500">(optional)</span>
+                    </label>
                     <input type="password" name="password"
                            class="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring focus:ring-blue-300 focus:outline-none">
                     @error('password')
@@ -42,17 +44,17 @@
                     @enderror
                 </div>
 
-                {{--  Confirm Password --}}
+                {{-- Confirm Password --}}
                 <div>
                     <label class="block mb-1 font-medium text-gray-700">Confirm Password</label>
                     <input type="password" name="password_confirmation"
                            class="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring focus:ring-blue-300 focus:outline-none">
                 </div>
 
-                {{--  Submit Button --}}
+                {{-- Submit Button --}}
                 <div class="pt-4">
                     <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg shadow transition">
+                            class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded-lg shadow transition">
                         Update Profile
                     </button>
                 </div>

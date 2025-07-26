@@ -7,18 +7,23 @@ use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
- public function index(Request $request)
+public function index(Request $request)
 {
-    $query = \App\Models\Department::query();
+    $query = Department::query();
 
     if ($search = $request->input('search')) {
         $query->where('name', 'like', "%{$search}%");
     }
 
-    $departments = $query->latest()->get();
+    // Use paginate instead of get for pagination
+    $departments = $query->latest()->paginate(10);
+
+    // Preserve search query in pagination links
+    $departments->appends($request->only('search'));
 
     return view('departments.index', compact('departments'));
 }
+
 
     public function create()
     {

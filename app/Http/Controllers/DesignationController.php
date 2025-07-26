@@ -7,16 +7,18 @@ use Illuminate\Http\Request;
 
 class DesignationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $designations = Designation::all();
+        // Optional: add search later
+        $designations = Designation::latest()->paginate(10); // 👈 Pagination added here
+
         return view('designations.index', compact('designations'));
     }
 
     public function create()
-{
-    return view('designations.create');
-}
+    {
+        return view('designations.create');
+    }
 
     public function store(Request $request)
     {
@@ -31,13 +33,10 @@ class DesignationController extends Controller
         return redirect()->route('designations.index')->with('success', 'Designation added!');
     }
 
-public function edit(Designation $designation)
-{
-    return view('designations.edit', compact('designation'));
-}
-
-
-
+    public function edit(Designation $designation)
+    {
+        return view('designations.edit', compact('designation'));
+    }
 
     public function update(Request $request, Designation $designation)
     {
